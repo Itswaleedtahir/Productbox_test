@@ -1,7 +1,7 @@
 {
-  "name": "node-boiler-plate-app",
+  "name": "productbox",
   "version": "0.0.1",
-  "description": "Boiler Plate Application of Node",
+  "description": "productbox",
   "scripts": {
     "start": "nodemon server.js | ./node_modules/.bin/bunyan",
     "server": "nodemon server.js | ./node_modules/.bin/bunyan",
