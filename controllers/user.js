@@ -62,7 +62,6 @@ module.exports = {
         throw { status: 400, message: "Otp is required" };
       }
       const User = await Users.findOne({ where: { id: user_id } });
-      console.log(User)
       if (!User) {
         throw { status: 404, message: "user not found" };
       }
