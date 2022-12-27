@@ -1,17 +1,18 @@
 const { Users } = require("../models");
 const moment = require("moment");
+const otpGenerator = require('otp-generator')
 
 module.exports = {
   userCreated: async (req, res) => {
     try {
-      const { name, phoneNumber } = req.body;
-      if (!name || !phoneNumber) {
+      const { name, phonenumber } = req.body;
+      if (!name || !phonenumber) {
         throw { status: 400, message: "Fields cannot be empty" };
       }
-      const ifUser = await Users.findOne({
-        where: { phone_number: phoneNumber },
+      const user = await Users.findOne({
+        where: { phone_number: phonenumber },
       });
-      if (ifUser) {
+      if (user) {
         throw {
           status: 401,
           message: "User with this phone number already exists",
@@ -19,7 +20,7 @@ module.exports = {
       }
       const User = await Users.create({
         name: name,
-        phone_number: phoneNumber,
+        phone_number: phonenumber,
       });
       res.status(200).json({ message: "User Created", User });
     } catch (err) {
@@ -28,19 +29,19 @@ module.exports = {
   },
   generateOtp: async (req, res) => {
     try {
-      const { phoneNumber } = req.body;
-      if (!phoneNumber) {
+      const { phonenumber } = req.body;
+      if (!phonenumber) {
         throw { status: 400, message: "Phone number is empty" };
       }
       const userFound = await Users.findOne({
-        where: { phone_number: phoneNumber },
+        where: { phone_number: phonenumber },
       });
       if (!userFound) {
         res
           .status(403)
           .json({ message: "User with this phone number does not exists" });
       }
-      const otp = Math.floor(Math.random() * 10000);
+      const otp = otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
       const userOtpGenerated = await userFound.update({
         otp: otp,
         otp_expiration_date: moment().unix() + 300,
