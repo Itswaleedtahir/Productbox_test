@@ -2,8 +2,6 @@
 const { DataTypes, QueryTypes } = require("sequelize");
 const moment = require("moment");
 const table = "users";
-const createdAt = moment().unix();
-const updatedAt = moment().unix();
 module.exports = {
   up: async function (queryInterface) {
     await queryInterface.createTable(table, {
