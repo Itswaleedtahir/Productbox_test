@@ -9,16 +9,17 @@ module.exports = {
       if (!name || !phonenumber) {
         throw { status: 400, message: "Fields cannot be empty" };
       }
-      const user = await Users.findOne({
-        where: { phone_number: phonenumber },
-      });
-      if (user) {
-        throw {
-          status: 401,
-          message: "User with this phone number already exists",
-        };
-      }
+      // const user = await Users.findOne({
+      //   where: { phone_number: phonenumber },
+      // });
+      // if (user) {
+      //   throw {
+      //     status: 401,
+      //     message: "User with this phone number already exists",
+      //   };
+      // }
       const User = await Users.create({
+        where:{phone_number:phonenumber},
         name: name,
         phone_number: phonenumber,
       });
